@@ -1,4 +1,5 @@
 import streamlit as st
+from database import supabase
 
 st.set_page_config(
     page_title="Shavkat Store Pro",
@@ -8,6 +9,17 @@ st.set_page_config(
 
 st.title("🏪 Shavkat Store Pro")
 
-st.success("Система успешно запущена!")
+st.write("## Проверка подключения к Supabase")
 
-st.write("Добро пожаловать в новую версию программы учета магазина.")
+try:
+    result = supabase.table("products").select("*").limit(1).execute()
+
+    st.success("✅ Подключение к Supabase успешно!")
+
+    st.write("База данных отвечает.")
+
+except Exception as e:
+
+    st.error("❌ Не удалось подключиться к Supabase")
+
+    st.code(str(e))
