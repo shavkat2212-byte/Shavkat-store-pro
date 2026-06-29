@@ -6,12 +6,8 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Shavkat Store Pro")
+st.title("🏪 Shavkat Store Pro")
 
-st.write("Если ты видишь это сообщение, значит app.py работает.")
+st.success("Система работает")
 
-try:
-    import pages
-    st.success("Папка pages найдена")
-except Exception as e:
-    st.error(e)
+st.write("Выберите раздел в меню слева.")
