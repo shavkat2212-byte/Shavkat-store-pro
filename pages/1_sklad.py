@@ -4,6 +4,7 @@ from io import BytesIO
 
 from database import (
     get_products,
+    get_product,
     add_product,
     update_product,
     delete_product,
@@ -253,5 +254,85 @@ if len(products):
         )
 
         st.success("Удалено")
+
+        st.rerun()
+st.divider()
+
+st.subheader("✏️ Редактировать товар")
+
+if len(products):
+
+    edit_items = {
+        f'{p["name"]} ({p["qty"]} шт)': p["id"]
+        for p in products
+    }
+
+    selected = st.selectbox(
+        "Выберите товар",
+        edit_items.keys(),
+        key="edit_select"
+    )
+
+    product = get_product(edit_items[selected])
+
+    name = st.text_input(
+        "Название",
+        value=product["name"],
+        key="edit_name"
+    )
+
+    qty = st.number_input(
+        "Количество",
+        value=int(product["qty"]),
+        min_value=0,
+        key="edit_qty"
+    )
+
+    cost = st.number_input(
+        "Себестоимость",
+        value=float(product["cost"]),
+        min_value=0.0,
+        key="edit_cost"
+    )
+
+    price = st.number_input(
+        "Цена продажи",
+        value=float(product["price"]),
+        min_value=0.0,
+        key="edit_price"
+    )
+
+    category = st.text_input(
+        "Категория",
+        value=product.get("category") or "",
+        key="edit_category"
+    )
+
+    brand = st.text_input(
+        "Бренд",
+        value=product.get("brand") or "",
+        key="edit_brand"
+    )
+
+    note = st.text_area(
+        "Комментарий",
+        value=product.get("note") or "",
+        key="edit_note"
+    )
+
+    if st.button("💾 Сохранить изменения"):
+
+        update_product(
+            product["id"],
+            name,
+            qty,
+            cost,
+            price,
+            category,
+            brand,
+            note
+        )
+
+        st.success("Товар обновлен")
 
         st.rerun()
