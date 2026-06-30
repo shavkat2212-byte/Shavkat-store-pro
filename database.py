@@ -70,3 +70,15 @@ def get_product(product_id):
         return response.data[0]
 
     return None
+def get_product(product_id):
+    response = (
+        supabase.table("products")
+        .select("*")
+        .eq("id", product_id)
+        .execute()
+    )
+
+    if response.data:
+        return response.data[0]
+
+    return None
